@@ -8,11 +8,11 @@ days = int(input("Enter the number of days :"))
 if(days<=5):
     amount = 0.50*days
     print(f'Fine amount of five days : {amount}')
-elif(days>=6 & days<=10):
+elif(days>=6 | days<=10):
     amount = 1*days
     print(f'fine Amount to five to ten days {amount} ')
 elif(days>=11):
     amount = 5*days
     print(f'fine Amount to greate then ten days {amount}')
-    if(days>30):
+    if(days>=31):
         print(' member ship would be cancelled.')
