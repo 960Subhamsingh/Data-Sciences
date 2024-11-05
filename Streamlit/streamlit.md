@@ -13,7 +13,7 @@
 - `st.latex()`
 - `st.divider()`
 
-## 2. Working with Text Inputs
+## [2. Working with Text Inputs](<../Streamlit/Streamlit_Tutorial/02_working_with_inputes.py>)
 - `st.text_input()`
 - `st.text_area()`
 - `st.number_input()`
@@ -21,7 +21,7 @@
 - `st.time_input()`
 - `st.color_picker()`
 
-## 3. Working with Interactive Widgets
+## [3. Working with Interactive Widgets](<../Streamlit/Streamlit_Tutorial/03_working_with_interactive_widgets.py>)
 - `st.button()`
 - `st.checkbox()`
 - `st.radio()`
@@ -30,7 +30,7 @@
 - `st.slider()`
 - `st.select_slider()`
 
-## 4. Status and Progress Indicators
+## [4. Status and Progress Indicators](<../Streamlit/Streamlit_Tutorial/04_status_and_progress_indicators.py>)
 - `st.empty()`
 - `st.progress()`
 - `st.spinner()`
@@ -42,7 +42,7 @@
 - `st.warning()`
 - `st.info()`
 
-## 5. Working with Data Objects
+## [5. Working with Data Objects](<../Streamlit/Streamlit_Tutorial/05_working_with_data_objects.py>)
 - `st.json()`
 - `st.dataframe()`
 - `st.table()`
