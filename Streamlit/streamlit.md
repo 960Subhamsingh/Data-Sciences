@@ -51,8 +51,8 @@
 - `st.dataeditor()`
 
 
-## 6. Working with Media Files
-- `st.image()`
+## [6. Working with Media Files](<../Streamlit/Streamlit_Tutorial/working_with_media_files/>)
+- [`st.image()`](<../Streamlit/Streamlit_Tutorial/working_with_media_files/image.py>)
 - `st.audio()`
 - `st.video()`
 - `st.file_uploader()`
