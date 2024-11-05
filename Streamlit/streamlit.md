@@ -1,6 +1,9 @@
 # Streamlit Application Tutorials
-## 1. Working with Text Display
+
+## [1. Working with Text Display](<../Streamlit/Streamlit_Tutorial/01_working_with_text_display.py>)
+
 **Emojis**: https://share.streamlit.io/streamlit/emoji-shortcodes
+
 - `st.title()`
 - `st.header()`
 - `st.subheader()`
