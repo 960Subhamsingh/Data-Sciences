@@ -60,7 +60,7 @@
 - `st.download_button()`
 
 
-## 7. Working with Plotting Libraries
+## [7. Working with Plotting Libraries](<../Streamlit/Streamlit_Tutorial/ploting/>)
 - `st.area_chart()`
 - `st.bar_chart()`
 - `st.line_chart()`

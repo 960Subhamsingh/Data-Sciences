@@ -2,9 +2,29 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from io import BytesIO
+from PIL import Image
+# from rembg import remove
+# from cartooner import cartoonize
+# import cv2
+
+
 st.title("Simple Data Dashboard")
 # write key and values 
 # st.write({"key":["values"]})
+
+# st.set_page_config(layout="wide", page_title="Image Background Remover")
+
+st.sidebar.write("## Upload and download :gear:")
+st.write(
+    ":dog: Try uploading an image to watch the background magically removed."
+)
+
+# Create the file uploader
+my_upload = st.sidebar.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
+
+
+
 
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
@@ -32,6 +52,7 @@ if(uploaded_file is not None):
 
     if st.button("Plot"):
         st.bar_chart(filter_values.set_index(x_column)[y_column])
+        st.success('Positive Review')
     else:
         st.write("Waiting on file upload")
  
