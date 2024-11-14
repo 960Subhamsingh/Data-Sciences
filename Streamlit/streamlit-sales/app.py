@@ -1,6 +1,4 @@
-# @Email:  contact@pythonandvba.com
-# @Website:  https://pythonandvba.com
-# @YouTube:  https://youtube.com/c/CodingIsFun
+# @Email:  kumarsubham@gmail.com
 
 # @Project:  Sales Dashboard w/ Streamlit
 
