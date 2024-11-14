@@ -1,123 +1,92 @@
+import streamlit as st
 import pandas as pd  # pip install pandas openpyxl
-import plotly.express as px  # pip install plotly-express
-import streamlit as st  # pip install streamlit
-# import openpyxl
-# emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
-st.set_page_config(page_title="Sales Dashboard", page_icon=":bar_chart:", layout="wide")
 
-# ---- READ EXCEL ----
-@st.cache_data
-def get_data_from_excel():
-    df = pd.read_excel(
-        io="D:/Project/Excel Datesheet/supermarkt_sales.xlsx",
-        engine="openpyxl",
-        sheet_name="Sales",
-        skiprows=3,
-        usecols="B:R",
-        nrows=1000,
-    )
-    # Add 'hour' column to dataframe
-    # df["hour"] = pd.to_datetime(df["Time"], format="%H:%M:%S").dt.hour
-    return df
+import plotly.express as px
+import time
 
-df = get_data_from_excel()
+'Starting a long computation...'
 
-# ---- SIDEBAR ----
-st.sidebar.header("Please Filter Here:")
-city = st.sidebar.multiselect(
-    "Select the City:",
-    options=df["City"].unique(),
-    default=df["City"].unique()
+# Add a placeholder
+latest_iteration = st.empty()
+bar = st.progress(0)
+
+for i in range(100):
+  # Update the progress bar with each iteration.
+  latest_iteration.text(f'Iteration {i+1}')
+  bar.progress(i + 1)
+  time.sleep(0.1)
+
+
+iris_df = px.data.iris()
+
+st.subheader("Iris Dataset")
+
+st.dataframe(iris_df)
+ 
+# create the scatter plot using plotly express
+basic_scatter_fig = px.scatter(iris_df, x="sepal_width", y ="sepal_length" , color="species", size="petal_length", symbol= "species")
+
+# display the figure in streamlit
+st.subheader("Iris Dataset : Basic Scatter Plot")
+st.plotly_chart(basic_scatter_fig)
+
+#user axis selection
+
+x_axis = st.selectbox('Choose a variable for the x-axis ', iris_df.columns, index=0)
+y_axis = st.selectbox('Choose a variable for the y-axis ', iris_df.columns, index=1) 
+
+# create  bubble chart with color, differnt sysmbols, and hover data
+colored_bouble_hover_fig = px.scatter(iris_df, x =y_axis , y =y_axis , color=
+                                      'species', size='petal_length', hover_data=['petal_width']) 
+
+# display the figure in Streamlit
+
+st.subheader('iris DataSet: Bubble chart with Electable Axex')
+
+colored_bouble_hover_fig.update_annotations(
+  font_family= "Courier New",
+  title = 'Iris Dataset Bubble Chart',
+  xaxix_title = x_axis,
+  yaxix_title = y_axis,
+  legend_title= 'Species'
 )
 
-customer_type = st.sidebar.multiselect(
-    "Select the Customer Type:",
-    options=df["Customer_type"].unique(),
-    default=df["Customer_type"].unique(),
-)
+st.plotly_chart(colored_bouble_hover_fig)
 
-gender = st.sidebar.multiselect(
-    "Select the Gender:",
-    options=df["Gender"].unique(),
-    default=df["Gender"].unique()
-)
+chart_type = st.radio("select  chart type: " , ("Scatter plot","line char","Bar Char", "Histogram","Box Plot", "Pie Chart" , "3D Scatter plot"))
 
-df_selection = df.query(
-    "City == @city & Customer_type ==@customer_type & Gender == @gender"
-)
+# Visualize the relationship betwween sepal length and sepal width , colered by species
 
-# Check if the dataframe is empty:
-if df_selection.empty:
-    st.warning("No data available based on the current filter settings!")
-    st.stop() # This will halt the app from further execution.
+if (chart_type == 'Scatter plot'):
+  fig= px.scatter(iris_df , x='sepal_length' , y='sepal_width', color='species', title='Iris Scatter plot' )
+  st.plotly_chart(fig) 
 
-# ---- MAINPAGE ----
-st.title(":bar_chart: Sales Dashboard")
-st.markdown("##")
+elif (chart_type == 'line char'):
+  iris_df_sorted = iris_df.sort_values(by='sepal_length').reset_index()
+  fig= px.line(iris_df_sorted, x=iris_df_sorted.index , y='sepal_length' , color='species', title='Iris sepal length Line Chart')
+  st.plotly_chart(fig)
 
-# TOP KPI's
-total_sales = int(df_selection["Total"].sum())
-average_rating = round(df_selection["Rating"].mean(), 1)
-star_rating = ":star:" * int(round(average_rating, 0))
-average_sale_by_transaction = round(df_selection["Total"].mean(), 2)
+elif (chart_type == 'Bar Char'):
+  avg_sepal_length = iris_df.groupby('species')['sepal_length'].mean().reset_index()
+  fig = px.bar(avg_sepal_length , x='species', y='sepal_length', title= ' Average Sepal Length of Iris Species')
+  st.plotly_chart(fig)
 
-left_column, middle_column, right_column = st.columns(3)
-with left_column:
-    st.subheader("Total Sales:")
-    st.subheader(f"US $ {total_sales:,}")
-with middle_column:
-    st.subheader("Average Rating:")
-    st.subheader(f"{average_rating} {star_rating}")
-with right_column:
-    st.subheader("Average Sales Per Transaction:")
-    st.subheader(f"US $ {average_sale_by_transaction}")
+elif (chart_type == 'Histogram'):
+   
+  fig = px.histogram(iris_df, x='sepal_length', title="Sepal Length Distribution")
+  st.plotly_chart(fig)
 
-st.markdown("""---""")
+elif (chart_type == 'Box Plot'):
+  fig = px.box(iris_df, x='species', y='sepal_length', title="Average Sepal Length of Iris Species")
+  st.plotly_chart(fig)
 
-# SALES BY PRODUCT LINE [BAR CHART]
-sales_by_product_line = df_selection.groupby(by=["Product line"])[["Total"]].sum().sort_values(by="Total")
-fig_product_sales = px.bar(
-    sales_by_product_line,
-    x="Total",
-    y=sales_by_product_line.index,
-    orientation="h",
-    title="<b>Sales by Product Line</b>",
-    color_discrete_sequence=["#0083B8"] * len(sales_by_product_line),
-    template="plotly_white",
-)
-fig_product_sales.update_layout(
-    plot_bgcolor="rgba(0,0,0,0)",
-    xaxis=(dict(showgrid=False))
-)
+elif (chart_type == 'Pie Chart'):
+  species_count = iris_df['species'].value_counts().reset_index()
+  fig = px.pie(species_count, names='species', values='species_id', title="Iris Speies Distrbution")
+  st.plotly_chart(fig)
 
-# SALES BY HOUR [BAR CHART]
-sales_by_hour = df_selection.groupby(by=["hour"])[["Total"]].sum()
-fig_hourly_sales = px.bar(
-    sales_by_hour,
-    x=sales_by_hour.index,
-    y="Total",
-    title="<b>Sales by hour</b>",
-    color_discrete_sequence=["#0083B8"] * len(sales_by_hour),
-    template="plotly_white",
-)
-fig_hourly_sales.update_layout(
-    xaxis=dict(tickmode="linear"),
-    plot_bgcolor="rgba(0,0,0,0)",
-    yaxis=(dict(showgrid=False)),
-)
+elif (chart_type == '3D Scatter plot'):
+  fig = px.scatter(iris_df, x='sepal_length', y='sepal_width', color='species' ,title="3D Scatter plot Iris")
+  st.plotly_chart(fig)
 
-
-left_column, right_column = st.columns(2)
-left_column.plotly_chart(fig_hourly_sales, use_container_width=True)
-right_column.plotly_chart(fig_product_sales, use_container_width=True)
-
-
-# ---- HIDE STREAMLIT STYLE ----
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
+ 

@@ -1,7 +1,6 @@
 # @Email:  kumarsubham@gmail.com
 
-# @Project:  Sales Dashboard w/ Streamlit
-
+# @Project:  Sales Dashboard Streamlit
 
 import pandas as pd  # pip install pandas openpyxl
 import plotly.express as px  # pip install plotly-express
