@@ -1,30 +1,20 @@
-# @Email:  kumarsubham@gmail.com
-
-# @Project:  Sales Dashboard Streamlit
-
 import pandas as pd  # pip install pandas openpyxl
 import plotly.express as px  # pip install plotly-express
 import streamlit as st  # pip install streamlit
 
-# emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
+ 
 st.set_page_config(page_title="Sales Dashboard", page_icon=":bar_chart:", layout="wide")
 
 # ---- READ EXCEL ----
-@st.cache_data
-def get_data_from_excel():
-    df = pd.read_excel(
-        io="supermarkt_sales.xlsx",
+ 
+df = pd.read_excel(
+        io="D:/Project/Data Sciences/Streamlit/streamlit-sales/supermarkt_sales.xlsx",
         engine="openpyxl",
         sheet_name="Sales",
         skiprows=3,
         usecols="B:R",
-        nrows=1000,
-    )
-    # Add 'hour' column to dataframe
-    df["hour"] = pd.to_datetime(df["Time"], format="%H:%M:%S").dt.hour
-    return df
-
-df = get_data_from_excel()
+        nrows=1000)
+df["hour"] = pd.to_datetime(df["Time"], format="%H:%M:%S").dt.hour
 
 # ---- SIDEBAR ----
 st.sidebar.header("Please Filter Here:")
@@ -68,7 +58,7 @@ average_sale_by_transaction = round(df_selection["Total"].mean(), 2)
 left_column, middle_column, right_column = st.columns(3)
 with left_column:
     st.subheader("Total Sales:")
-    st.subheader(f" IN ₹ {total_sales:,}")
+    st.subheader(f"IN ₹ {total_sales:,}")
 with middle_column:
     st.subheader("Average Rating:")
     st.subheader(f"{average_rating} {star_rating}")
@@ -110,18 +100,10 @@ fig_hourly_sales.update_layout(
     yaxis=(dict(showgrid=False)),
 )
 
-
+ 
 left_column, right_column = st.columns(2)
 left_column.plotly_chart(fig_hourly_sales, use_container_width=True)
 right_column.plotly_chart(fig_product_sales, use_container_width=True)
 
 
-# ---- HIDE STREAMLIT STYLE ----
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
+ 
