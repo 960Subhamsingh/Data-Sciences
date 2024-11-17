@@ -21,8 +21,8 @@ if (uploaded_file is not None):
     with st.expander("data Preview"):
         st.write(df)
 else:
-    os.chdir("D:/Project/py_stram")
-    df = pd.read_excel("sample_superstrore.xlsx")
+    os.chdir("E:/Datasets")
+    df = pd.read_excel("sample_superstrore.xlsx", sheet_name="Orders")
 
      
 col1, col2 = st.columns((2))
