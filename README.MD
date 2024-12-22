@@ -6,7 +6,7 @@
 
 - plotly [Plotly](./plotly/)
 
-- Pandas [Pandas](./pandas/)
+- Pandas [Pandas](./pandas/README.MD)
 
 - Scipy [Scipy](./Scipy/)
 
